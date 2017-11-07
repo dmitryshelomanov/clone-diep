@@ -6,6 +6,7 @@ export default class Weapon extends Phaser.Weapon {
   public game: Phaser.Game;
   public texture: Texture;
   public sprite: Phaser.Sprite;
+  public damage: number = 10;
 
   constructor(
     game: Phaser.Game, player: Player, a: number = null, c: number, b: number
@@ -16,9 +17,10 @@ export default class Weapon extends Phaser.Weapon {
     this.bulletSpeed = 1000;
     this.fireRate = 100;
     this.bulletKillType = Phaser.Weapon.KILL_DISTANCE;
-    this.bulletKillDistance = 400;
+    this.bulletKillDistance = 1000;
+    this.game.physics.enable(this, Phaser.Physics.ARCADE, false);
     this.createBullets(20, new Texture(game, 0, 0, TextureType.CIRCLE, c, b, 20).generateTexture());
-    this.game.physics.arcade.enable(this, true);
+    
   }
 
 

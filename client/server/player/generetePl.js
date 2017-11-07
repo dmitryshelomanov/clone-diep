@@ -17,7 +17,7 @@ module.exports = {
       socket.emit("player:get", players);
 
       if (maps.data.length === 0) 
-        socket.emit("maps:get", maps.generate(500));
+        socket.emit("maps:get", maps.generate(200));
       socket.emit("maps:get", maps.data);
 
       maps.onMove(io, socket);

@@ -4,8 +4,8 @@ module.exports = {
     for (let i = 0; i < limit; i++) { 
       this.data.push({
         ids: i,
-        x: Math.floor(Math.random() * 10000),
-        y: Math.floor(Math.random() * 10000),
+        x: Math.floor(Math.random() * 5000),
+        y: Math.floor(Math.random() * 5000),
         r: 0,
         h: 200
       });

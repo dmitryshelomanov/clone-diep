@@ -1,9 +1,10 @@
 import State from "./main/state";
 import Player from "../gameObj/Player";
-import Emiter from "../socket";
+// import Emiter from "../socket";
 import MobsContrainer from "../gameObj/MobsContrainer";
 import config from "../conf";
 import Texture, { TextureType } from "../graphics/texture";
+import Weapon from "../gameObj/weapon/weapon";
 
 export default class MainState extends State {
 
@@ -17,7 +18,7 @@ export default class MainState extends State {
 
   constructor() {
     super();
-    this.ioEmiter = Emiter.getEmiter().getIO();
+    // this.ioEmiter = Emiter.getEmiter().getIO();
   }
 
   public create(): void {
@@ -31,20 +32,29 @@ export default class MainState extends State {
    * Подключение юзера и создание карты
    */
   private checkReady(): void { 
-    this.ioEmiter.emit("player:ready", () => { 
-      this.ioEmiter.on("player:join", pl => {
-        this.player = new Player(this.game, pl.x, pl.y, pl.r, pl.ids, true);
+    // this.ioEmiter.emit("player:ready", () => { 
+      // this.ioEmiter.on("player:join", pl => {
+        this.player = new Player(this.game, 200, 200, 0, 1, true);
         this.game.add.existing(this.player);
-      });
+        this.game.add.existing(new Player(this.game, 250, 250, 0, 2, true));
+        this.game.add.existing(new Player(this.game, 300, 300, 0, 3, true));
+        this.game.add.existing(new Player(this.game, 350, 350, 0, 3, true));
+        this.game.add.existing(new Player(this.game, 400, 400, 0, 3, true));
+        this.game.add.existing(new Player(this.game, 500, 500, 0, 3, true));
+        for (let i = 0; i < 500; i++) { 
+          this.mobs.add(new MobsContrainer(this.game, Math.floor(Math.random() * MainState.bw), Math.floor(Math.random() * MainState.bh), 100, 0, i));
+        };
+        
+      // });
       this.enemies = new Phaser.Group(this.game);
-      this.renderNewUser();
-      this.getAllPlayer();
-      this.checkMove();
-      this.handleFire();
-      this.renderMobs();
-      this.checkMoveMobs();
-      this.playerDisconnect();
-    });
+      // this.renderNewUser();
+      // this.getAllPlayer();
+      // this.checkMove();
+      // this.handleFire();
+      // this.renderMobs();
+      // this.checkMoveMobs();
+      // this.playerDisconnect();
+    // });
   } 
 
   /**
@@ -156,28 +166,15 @@ export default class MainState extends State {
    * Проверка колизий
    */
   private collide(): void { 
-    this.game.physics.arcade.collide(this.mobs, this.player, (player: Player, mob: MobsContrainer) => { 
-      setTimeout(() => { 
-        this.ioEmiter.emit("map:move", { ids: mob.ids, x: mob.x, y: mob.y });
-      }, 0);
-    });
+    this.game.physics.arcade.collide(this.mobs, this.player);
     // this.game.physics.arcade.collide(this.player, this.enemies);
-    // this.game.physics.arcade.collide(this.mobs, this.mobs, (mob1: MobsContrainer, mob2: MobsContrainer) => { 
-    //   this.ioEmiter.emit("map:move", { ids: mob1.ids, x: mob1.x, y: mob1.y });
-    //   this.ioEmiter.emit("map:move", { ids: mob2.ids, x: mob2.x, y: mob2.y });
-    // });
-    this.player.collideWithWeapon(this.mobs, (mob: MobsContrainer, bullet: Phaser.Bullet) => { 
-      bullet.kill();
-      setTimeout(() => { 
-        this.ioEmiter.emit("map:move", { ids: mob.ids, x: mob.x, y: mob.y });
-      }, 0);
-    });
-    // this.player.collideWithWeapon(this.enemies);
+    this.game.physics.arcade.collide(this.mobs);
+    this.player.collideWithWeapon(this.mobs);
   }
 
   public update(): void { 
     if (this.player) { 
-      this.collide();
+      // this.collide();
     };
   }
 

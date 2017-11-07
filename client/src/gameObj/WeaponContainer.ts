@@ -1,7 +1,7 @@
 import Weapon from "../gameObj/weapon/weapon";
 import Player from "./Player";
 
-export default class Sprite extends Phaser.Sprite { 
+export default class Sprite extends Phaser.Particle { 
 
   public game: Phaser.Game;
   public weapon: Weapon;
@@ -19,7 +19,7 @@ export default class Sprite extends Phaser.Sprite {
   }
 
   public collide(obj: any, cb?:Function): void {
-    this.game.physics.arcade.collide(obj, this.weapon.bullets, cb);
+    this.game.physics.arcade.collide(obj, this.weapon.bullets, cb ? cb : null);
   }
 
   public update() {

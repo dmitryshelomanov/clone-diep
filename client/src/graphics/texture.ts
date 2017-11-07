@@ -57,8 +57,8 @@ export default class extends Phaser.Graphics {
 
   public mobSquare(): void { 
     this.beginFill(0xffe765, 1);
-    this.lineStyle(5, 0xbdac4f, 1);
-    this.drawRect(this.x, this.y, 40, 40);
+    this.lineStyle(3, 0xbdac4f, 1);
+    this.drawRect(this.x, this.y, 32, 32);
   }
 
   public healthBarWrap(): void { 
