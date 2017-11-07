@@ -36,12 +36,7 @@ export default class MainState extends State {
       // this.ioEmiter.on("player:join", pl => {
         this.player = new Player(this.game, 200, 200, 0, 1, true);
         this.game.add.existing(this.player);
-        this.game.add.existing(new Player(this.game, 250, 250, 0, 2, true));
-        this.game.add.existing(new Player(this.game, 300, 300, 0, 3, true));
-        this.game.add.existing(new Player(this.game, 350, 350, 0, 3, true));
-        this.game.add.existing(new Player(this.game, 400, 400, 0, 3, true));
-        this.game.add.existing(new Player(this.game, 500, 500, 0, 3, true));
-        for (let i = 0; i < 500; i++) { 
+        for (let i = 0; i < 1000; i++) { 
           this.mobs.add(new MobsContrainer(this.game, Math.floor(Math.random() * MainState.bw), Math.floor(Math.random() * MainState.bh), 100, 0, i));
         };
         
@@ -174,7 +169,7 @@ export default class MainState extends State {
 
   public update(): void { 
     if (this.player) { 
-      // this.collide();
+      this.collide();
     };
   }
 

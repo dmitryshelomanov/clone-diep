@@ -26,7 +26,7 @@ if (!module.parent) {
     const config: Phaser.IGameConfig = {
       width: window.innerWidth,
       height: window.innerHeight,
-      renderer: Phaser.CANVAS,
+      renderer: Phaser.AUTO,
       parent: '',
       resolution: 1,
       forceSetTimeOut: false
