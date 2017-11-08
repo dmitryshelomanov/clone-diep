@@ -4,7 +4,8 @@ export enum TextureType {
   MobSquare = 3,
   HealthBarWrap = 4,
   HealthBarInner = 5,
-  MobTriangle = 6
+  MobTriangle = 6,
+  BlinkCursor = 7
 };
 
 export default class extends Phaser.Graphics { 
@@ -42,6 +43,9 @@ export default class extends Phaser.Graphics {
         break;
       case TextureType.HealthBarInner:
         this.healthBarInner();
+        break;
+      case TextureType.BlinkCursor:
+        this.blinkCursor();
         break;
     };
   }
@@ -83,6 +87,12 @@ export default class extends Phaser.Graphics {
   public healthBarInner(): void { 
     this.beginFill(0x85e37d, 1);
     this.drawRect(this.x, this.y, 96, 6);
+  }
+
+  public blinkCursor(): void { 
+    this.beginFill(0xb2a1b1, .5);
+    this.lineStyle(3, 0xdb283a, .5);
+    this.drawCircle(0, 0, this.radius);
   }
 
 }

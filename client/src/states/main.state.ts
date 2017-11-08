@@ -26,6 +26,7 @@ export default class MainState extends State {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.world.setBounds(0, 0, MainState.bw, MainState.bh);
     this.game.add.tileSprite(0, 0, MainState.bw, MainState.bh, "bg");
+    this.game.stage.disableVisibilityChange = true;
     this.mobs = this.game.add.physicsGroup(Phaser.Physics.ARCADE);
     this.checkReady();
   }

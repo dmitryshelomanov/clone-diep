@@ -92,12 +92,21 @@ abstract class AbstractPl extends Phaser.Sprite {
   protected renderSkills(): void { 
     for (let i = 0; i < this.skills.length; i++) { 
       this.game.add.existing(this.skills[i]);
-    }
+    };
+  }
+
+  protected abordSkills(): void { 
+    for (let i = 0; i < this.skills.length; i++) { 
+      this.skills[i].abort();
+    };
   }
 
   protected acticateSkill(): void { 
     if (this.game.input.keyboard.downDuration(Phaser.Keyboard.Q, 10)) { 
       this.skills[0].preActivate();
+    };
+    if (this.game.input.keyboard.downDuration(Phaser.Keyboard.E, 10)) { 
+      this.skills[1].preActivate();
     };
   }
  

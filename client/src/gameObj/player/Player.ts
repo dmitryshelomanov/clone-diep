@@ -1,6 +1,7 @@
 import AbstractPL from "./AbstractPl";
 import Texture, { TextureType } from "../../graphics/texture";
 import SkillBlink from "../skills/Blink";
+import Envise from "../skills/Envise";
 
 export default class Player extends AbstractPL { 
   
@@ -9,6 +10,7 @@ export default class Player extends AbstractPL {
     this.addWeapon(0);
     this.renderWeapon();
     this.addSkill(new SkillBlink(this.game, this));
+    this.addSkill(new Envise(this.game, this));
     this.renderSkills();
     this.game.camera.follow(this);
   }
@@ -33,6 +35,7 @@ export default class Player extends AbstractPL {
     };
     if (this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) { 
       this.fire();
+      this.abordSkills();
     };
   }
 

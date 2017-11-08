@@ -1,7 +1,7 @@
 import AbstractPl from "../player/AbstractPl";
 
-const style = {
-  font: "40px bold Roboto",
+export const Style = {
+  font: "40px Roboto",
   fill: "#000"
 };
 
@@ -14,6 +14,8 @@ abstract class ParentSkill extends Phaser.Sprite {
   public lastActive: string = "";
   public textTime: Phaser.Text;
   public timer: Phaser.Timer;
+  public timerCb: Array<Function> = [];
+  protected aliveTime: number = 5;
 
   constructor(game: Phaser.Game, player: AbstractPl, x:number, y: number, k: string) { 
     super(game, x, y, k);
@@ -21,8 +23,7 @@ abstract class ParentSkill extends Phaser.Sprite {
     this.height = 60;
     this.fixedToCamera = true;
     this.player = player;
-    this.addChild(new Phaser.Text(this.game, 0, -60, "Q", style));
-    this.textTime = new Phaser.Text(this.game, this.width / 2, this.height + 65, "", style);
+    this.textTime = new Phaser.Text(this.game, this.width / 2, this.height + 65, "", Style);
     this.addChild(this.textTime);
     this.timer = this.game.time.create();
     this.timerLoopConf();
@@ -35,6 +36,11 @@ abstract class ParentSkill extends Phaser.Sprite {
   public preActivate(): void { }
 
   /**
+   * Прерывание скила
+   */
+  public abort(): void { }
+
+  /**
    * Метода вызываемый конкретно для эффекта скила
    * @param x 
    * @param y 
@@ -45,7 +51,10 @@ abstract class ParentSkill extends Phaser.Sprite {
    * Зацикливание таймера
    * @param startDelay 
    */
-  public timerLoop(startDelay: number): void { 
+  public timerLoop(cb?: Function): void { 
+    if (cb) {
+      this.timerCb.push(cb);
+    };
     if (this.timer.paused) { 
       return this.timer.resume();
     };
@@ -53,13 +62,30 @@ abstract class ParentSkill extends Phaser.Sprite {
   }
 
   /**
+   * Удаление таймера
+   */
+  public abortTimer(): void { 
+    this.timer.pause();
+    this.textTime.text = "";
+  }
+
+  protected timerCbProcess(): void { 
+    for (let i = 0; i < this.timerCb.length; i++) { 
+      console.log(this.timerCb[i])
+      this.timerCb[i]();
+      this.timerCb.shift();
+    };
+  }
+
+  /**
    * Настройка таймера
    * И обновление ткста на скиле
    */
-  private timerLoopConf(): void { 
+  private timerLoopConf(cb?: Function): void { 
     this.timer.loop(1000, () => { 
       let num = `${Number(this.textTime.text) - 1}`;
       if (Number(num) === 0) { 
+        this.timerCbProcess();
         this.textTime.text = "";
         this.isActive = false;
         this.timer.pause();
