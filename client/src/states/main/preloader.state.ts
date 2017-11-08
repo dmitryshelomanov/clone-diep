@@ -7,6 +7,8 @@ const health = require("assets/images/health.png");
 const healthIn = require("assets/images/healthIn.png");
 const pl = require("assets/images/pl.png");
 const pl1 = require("assets/images/pl1.png");
+//skols icon
+const blink = require("assets/images/blink.png");
 
 export default class PreloaderState extends State {
 
@@ -18,6 +20,7 @@ export default class PreloaderState extends State {
     this.game.load.image("healthIn", healthIn);
     this.game.load.image("pl", pl);
     this.game.load.image("pl1", pl1);
+    this.game.load.image("blink", blink);
   }
 
   create(): void {

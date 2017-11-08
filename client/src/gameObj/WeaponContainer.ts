@@ -1,13 +1,15 @@
 import Weapon from "../gameObj/weapon/weapon";
-import Player from "./Player";
+import AbstractPl from "./player/AbstractPl";
 
 export default class Sprite extends Phaser.Particle { 
 
   public game: Phaser.Game;
   public weapon: Weapon;
-  public player: Player;
+  public player: AbstractPl;
+  public isAnimated: false;
+  public animatedTimer = null;
 
-  constructor(game: Phaser.Game, x: number, y: number, a: number, player: Player) { 
+  constructor(game: Phaser.Game, x: number, y: number, a: number, player: AbstractPl) { 
     super(game, x, y);
     this.game = game;
     this.player = player;

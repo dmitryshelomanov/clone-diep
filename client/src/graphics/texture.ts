@@ -1,9 +1,10 @@
 export enum TextureType {
   CIRCLE = 1,
   WEAPON = 2,
-  mobSquare = 3,
+  MobSquare = 3,
   HealthBarWrap = 4,
-  HealthBarInner = 5
+  HealthBarInner = 5,
+  MobTriangle = 6
 };
 
 export default class extends Phaser.Graphics { 
@@ -30,8 +31,11 @@ export default class extends Phaser.Graphics {
       case TextureType.WEAPON:
         this.weaponA();
         break;
-      case TextureType.mobSquare:
+      case TextureType.MobSquare:
         this.mobSquare();
+        break;
+      case TextureType.MobTriangle:
+        this.mobTriangle();
         break;
       case TextureType.HealthBarWrap:
         this.healthBarWrap();
@@ -59,6 +63,16 @@ export default class extends Phaser.Graphics {
     this.beginFill(0xffe765, 1);
     this.lineStyle(3, 0xbdac4f, 1);
     this.drawRect(this.x, this.y, 32, 32);
+  }
+
+  public mobTriangle(): void {
+    this.beginFill(0xec2560, 1);
+    this.lineStyle(3, 0xc12755, 1);
+    this.drawTriangle([
+      new Phaser.Point(0, 0),
+      new Phaser.Point(32, 32),
+      new Phaser.Point(50, 0)
+    ]);
   }
 
   public healthBarWrap(): void { 

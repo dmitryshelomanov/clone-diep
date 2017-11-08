@@ -1,5 +1,6 @@
 import State from "./main/state";
-import Player from "../gameObj/Player";
+import Enemy from "../gameObj/player/Enemy";
+import Player from "../gameObj/player/Player";
 // import Emiter from "../socket";
 import MobsContrainer from "../gameObj/MobsContrainer";
 import config from "../conf";
@@ -34,10 +35,13 @@ export default class MainState extends State {
   private checkReady(): void { 
     // this.ioEmiter.emit("player:ready", () => { 
       // this.ioEmiter.on("player:join", pl => {
-        this.player = new Player(this.game, 200, 200, 0, 1, true);
+        this.player = new Player(this.game, 200, 200, 0, 1);
         this.game.add.existing(this.player);
         for (let i = 0; i < 1000; i++) { 
-          this.mobs.add(new MobsContrainer(this.game, Math.floor(Math.random() * MainState.bw), Math.floor(Math.random() * MainState.bh), 100, 0, i));
+          let randomX = Math.floor(Math.random() * MainState.bw);
+          let randomY = Math.floor(Math.random() * MainState.bh);
+          let type = Math.floor(Math.random() * 3) === 1 ? TextureType.MobTriangle : TextureType.MobSquare;
+          this.mobs.add(new MobsContrainer(this.game, randomX, randomY, 100, 0, i, type));
         };
         
       // });
@@ -45,8 +49,6 @@ export default class MainState extends State {
       // this.renderNewUser();
       // this.getAllPlayer();
       // this.checkMove();
-      // this.handleFire();
-      // this.renderMobs();
       // this.checkMoveMobs();
       // this.playerDisconnect();
     // });
@@ -56,14 +58,14 @@ export default class MainState extends State {
    * Создание текущих игроков
    */
   private getAllPlayer(): void { 
-    this.ioEmiter.on("player:get", (pl) => {
-      for (let pop in pl) { 
-        if (pop !== this.player.ids) {
-          let { ids, x, y, r } = pl[pop];
-          this.enemies.add(new Player(this.game, x, y, r, ids));
-        };
-      };
-    });
+    // this.ioEmiter.on("player:get", (pl) => {
+      // for (let pop in pl) { 
+        // if (pop !== this.player.ids) {
+          // let { ids, x, y, r } = pl[pop];
+          this.enemies.add(new Enemy(this.game, 300, 300, 0, 2));
+        // };
+      // };
+    // });
   }
 
   /**
@@ -85,38 +87,6 @@ export default class MainState extends State {
     this.ioEmiter.on("player:newPlayer", pl => {
       let { ids, x, y, r } = pl;
       this.enemies.add(new Player(this.game, x, y, r, ids));
-    });
-  }
-
-  /**
-   * Рендер мобов
-   */
-  private renderMobs() { 
-    this.ioEmiter.on("maps:get", map => {
-      map.forEach(({ ids, x, y, h, r }) => {
-        this.mobs.add(new MobsContrainer(this.game, x, y, h, r, ids));
-      });
-    });
-  }
-
-  /**
-   * Проверка движения мобов
-   */
-  private checkMoveMobs(): void { 
-    this.ioEmiter.on("map:move-client", async ({ ids, x, y }) => {
-      let mob = await this.findMobs(ids);
-      mob.x = x;
-      mob.y = y;
-    });
-  }
-
-  /**
-   * Отрисовка стрельбы
-   */
-  private handleFire(): void { 
-    this.ioEmiter.on("player:fire-client", async (ids) => { 
-      let pl: Player = await this.findEnemy(ids);
-      pl.fire();
     });
   }
 
@@ -160,21 +130,17 @@ export default class MainState extends State {
   /**
    * Проверка колизий
    */
-  private collide(): void { 
+  private mainCollied(): void { 
     this.game.physics.arcade.collide(this.mobs, this.player);
-    // this.game.physics.arcade.collide(this.player, this.enemies);
-    this.game.physics.arcade.collide(this.mobs);
-    this.player.collideWithWeapon(this.mobs);
+    this.game.physics.arcade.collide(this.player, this.enemies);
+    this.game.physics.arcade.collide(this.mobs, this.enemies);
   }
 
   public update(): void { 
     if (this.player) { 
-      this.collide();
+      this.mainCollied();
     };
   }
 
-  public render(): void { 
-    this.game.debug.cameraInfo(this.camera, 100, 100);
-  }
 
 }

@@ -1,4 +1,4 @@
-import Player from "../Player";
+import AbstractPl from "../player/AbstractPl";
 import Texture, { TextureType } from "../../graphics/texture";
 
 export default class Weapon extends Phaser.Weapon { 
@@ -9,7 +9,7 @@ export default class Weapon extends Phaser.Weapon {
   public damage: number = 10;
 
   constructor(
-    game: Phaser.Game, player: Player, a: number = null, c: number, b: number
+    game: Phaser.Game, player: AbstractPl, a: number = null, c: number, b: number
   ) { 
     super(game, null);
     this.game = game;
@@ -20,8 +20,6 @@ export default class Weapon extends Phaser.Weapon {
     this.bulletKillDistance = 1000;
     this.game.physics.enable(this, Phaser.Physics.ARCADE, false);
     this.createBullets(20, new Texture(game, 0, 0, TextureType.CIRCLE, c, b, 20).generateTexture());
-    
   }
-
 
 }
